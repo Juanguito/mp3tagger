@@ -15,7 +15,7 @@ class TestFileProxy(TestCase):
         self.tag_proxy = TagProxy()
 
         if self.os_proxy.exist_path(self.mp3_file_path):
-            self.os_proxy.remove(self.mp3_file_path)
+            self.os_proxy.remove_directory(self.mp3_file_path)
 
     def test_instantiate_file_proxy(self):
         assert TagProxy()

@@ -1,4 +1,3 @@
-import os
 from mp3_tagger import MP3File, VERSION_1, VERSION_2, VERSION_BOTH
 
 class TagProxy():
