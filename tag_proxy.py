@@ -2,7 +2,10 @@ from mp3_tagger import MP3File, VERSION_1, VERSION_2, VERSION_BOTH
 
 class TagProxy():
     def retrieve_mp3_file(self, path):
-        return MP3File(path)
+        try:
+            return MP3File(path)
+        except:
+            raise FileNotFoundError
 
     def read_v1_tags(self, file):
         file.set_version(VERSION_1)

@@ -9,6 +9,12 @@ class FolderManager():
     def __init__(self):
         self.path_proxy = OSProxy()
 
+    def exist_path(self, path):
+        return self.path_proxy.exist_path(path)
+
+    def remove_file(self, path):
+        self.path_proxy.remove_file(path)
+
     def get_current_saving_directory(self):
         path = '{} {}'.format(self.DIRECTORY_NAME, self.DIRECTORY_NUMBER)
 

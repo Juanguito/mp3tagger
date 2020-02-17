@@ -5,6 +5,8 @@ from unittest import TestCase
 
 class TestFileManager(TestCase):
     os_proxy = OSProxy()
+    source_path = '/files'
+    source_within_directory_path = '/files/folder'
 
     def setUp(self):
         self.manager = FolderManager()
@@ -18,9 +20,6 @@ class TestFileManager(TestCase):
             self.os_proxy.remove_directory(
                 self.destination_path_when_full
         )
-
-        self.source_path = '/files'
-        self.source_within_directory_path = '/files/folder'
 
         if self.os_proxy.exist_path(self.source_path):
             self.os_proxy.remove_directory(self.source_path)
@@ -73,3 +72,23 @@ class TestFileManager(TestCase):
         # source_file.name = '/test/test.mp3'
 
         # assert open(completeName, "r")
+
+    def test_path_not_exist(self):
+        assert not self.manager.exist_path(self.source_path)
+
+    def test_path_exist(self):
+        self.os_proxy.create_directory(self.source_path)
+
+        assert self.manager.exist_path(self.source_path)
+
+    def test_remove_not_existing_file(self):
+        with self.assertRaises(FileNotFoundError):
+            self.manager.remove_file(self.source_path)
+
+    def test_remove_existing_file(self):
+        with open(self.source_path, "w") as file:
+            file.write(' ')
+
+        self.manager.remove_file(self.source_path)
+
+        assert not self.manager.exist_path(self.source_path)

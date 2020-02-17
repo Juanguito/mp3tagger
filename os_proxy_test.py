@@ -11,12 +11,18 @@ class TestPathProxy(TestCase):
 
     def setUp(self):
         self.files_path = './files'
-        self.wrong_path = './lele'
+        self.wrong_path = './wrong'
         self.file_name = 'test.mp3'
         self.other_file_name = 'other.mp3'
 
         if os.path.exists(self.files_path):
             shutil.rmtree(self.files_path, ignore_errors=True)
+
+        if os.path.exists(self.file_name):
+            os.remove(self.file_name)
+
+        if os.path.exists(self.other_file_name):
+            os.remove(self.other_file_name)
 
     def test_instantiate_path_proxy_class(self):
         assert OSProxy()
@@ -109,9 +115,24 @@ class TestPathProxy(TestCase):
         with self.assertRaises(TypeError):
             self.path_proxy.move_file(self.file_name, None)
 
-    def test_move_file_to_none_path(self):
-        wrong_path = self.path_proxy.join_paths(self.wrong_path, self.other_file_name)
-        self.path_proxy.move_file(self.file_name, wrong_path)
+    def test_error_when_moving_not_existing_file(self):
+        with self.assertRaises(FileNotFoundError):
+            self.path_proxy.move_file(self.file_name, self.other_file_name)
 
-        assert self.path_proxy.exist_path('./lele/other.mp3')
+    def test_error_when_moving_to_existing_file_path(self):
+        with open(self.file_name, "w") as file:
+            file.write(' ')
+        with open(self.other_file_name, "w") as file:
+            file.write(' ')
+
+        with self.assertRaises(FileExistsError):
+            self.path_proxy.move_file(self.file_name, self.other_file_name)
+
+    def test_move_file_to_path(self):
+        with open(self.file_name, "w") as file:
+            file.write(' ')
+
+        self.path_proxy.move_file(self.file_name, self.other_file_name)
+
+        assert self.path_proxy.exist_path(self.other_file_name)
 
