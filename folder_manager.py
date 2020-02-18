@@ -37,7 +37,10 @@ class FolderManager():
 
     def retrieve_directory_files(self, path):
         with self.path_proxy.retrieve_files_from_directory(path) as entries:
-            return tuple(entry for entry in entries if entry.is_file())
+            return tuple(
+                entry for entry in entries
+                if entry.is_file() and entry.name.endswith('.mp3')
+            )
 
     def save_file_to_folder(self, file, path):
         pass

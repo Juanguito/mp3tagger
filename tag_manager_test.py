@@ -1,4 +1,5 @@
 from unittest import TestCase
+from unittest.mock import MagicMock
 from tag_manager import TagManager
 from folder_manager import FolderManager
 
@@ -26,3 +27,8 @@ class TestTagManager(TestCase):
 
         with self.assertRaises(FileNotFoundError):
             self.tag_manager.mp3_file(self.not_mp3_file_path)
+
+    # def test_retrieve_mp3_file(self):
+
+    def test_retrieve_tags_from_mp3(self):
+        

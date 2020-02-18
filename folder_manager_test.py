@@ -1,6 +1,7 @@
 from folder_manager import FolderManager
 from os_proxy import OSProxy
 from unittest import TestCase
+from unittest.mock import Mock
 
 
 class TestFileManager(TestCase):
@@ -65,6 +66,23 @@ class TestFileManager(TestCase):
 
         assert len(entries) == 1
 
+    def test_retrieve_only_mp3_files_from_existing_directory(self):
+        self.os_proxy.create_directory(self.source_path)
+        self.os_proxy.create_directory(self.source_within_directory_path)
+
+        completeName = self.os_proxy.join_paths(self.source_path, "test.mp3")
+        with open(completeName, "w") as file:
+            file.write(' ')
+
+        completeName2 = self.os_proxy.join_paths(self.source_path, "test.txt")
+        with open(completeName2, "w") as file:
+            file.write(' ')
+
+        entries = self.manager.retrieve_directory_files(
+            self.source_path
+        )
+
+        assert len(entries) == 1
 
     def test_save_file_to_other_folder(self):
         pass
